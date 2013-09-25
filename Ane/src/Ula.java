@@ -13,20 +13,7 @@ public class Ula {
 	
 
 	public void exec(BancoRegistradores br, PC pc){
-		if(pc.defOperation()){ // tipo I
-                    
-                       iTypeOperation(br, pc.getOpCode(), pc);
-			
-			
-		} else { // tipo R
-			
-			rTypeOperation(br, pc);
-			
-		}
-	}
-        
-	private void iTypeOperation(BancoRegistradores br, int OpCode, PC pc){
-            switch (OpCode) {
+	      switch (pc.getOpCode()) {
                     case 0x00:
                         call(br,pc);
                         break;
@@ -353,13 +340,13 @@ public class Ula {
         
     // rTypeOperations    
     private void roli(BancoRegistradores br, PC pc){
-        int n = Integer.rotateLeft(pc.getrA(), pc.getImm5());
+        int n = Integer.rotateLeft(br.getRegistrador(pc.getrA()), br.getRegistrador(pc.getImm5()));
         br.setRegistrador( pc.getrC(), n);
     }
 	
     private void rol(BancoRegistradores br, PC pc){
-        int n = (pc.getrB() << 1);
-        n = Integer.rotateLeft(pc.getrA(), n);
+        int n = (br.getRegistrador(pc.getrB()) << 1);
+        n = Integer.rotateLeft(br.getRegistrador(pc.getrA()), n);
         br.setRegistrador(pc.getrC(), n);
     }
         
@@ -376,7 +363,7 @@ public class Ula {
         
 	
     private void nor(BancoRegistradores br, PC pc) {
-        br.setRegistrador(pc.getrC(),(pc.getrA() | pc.getrB()));
+        br.setRegistrador(pc.getrC(),~(br.getRegistrador(pc.getrA()) | br.getRegistrador(pc.getrB())));
     
     }
 
@@ -386,7 +373,7 @@ public class Ula {
 
     private void cmpge(BancoRegistradores br, PC pc) {
         int cmp;
-        if(pc.getrA()>= pc.getrB()){
+        if(br.getRegistrador(pc.getrA())>= br.getRegistrador(pc.getrB())){
             cmp = 1;
         }else cmp = 0;
         br.setRegistrador(pc.getrC(),cmp);
@@ -397,8 +384,8 @@ public class Ula {
     }
 
     private void ror(BancoRegistradores br, PC pc) {
-        int n = (pc.getrB() << 1 );
-        n = Integer.rotateRight(pc.getrA(), n);
+        int n = (br.getRegistrador(pc.getrB()) << 1 );
+        n = Integer.rotateRight(br.getRegistrador(pc.getrA()), n);
         br.setRegistrador(pc.getrC(), n);
     }
 
@@ -407,24 +394,24 @@ public class Ula {
     }
 
     private void jmp(BancoRegistradores br, PC pc) {
-        br.setRegistrador(pc.getrA(), pc.getrA());
+        br.setRegistrador(pc.getrA(), br.getRegistrador(pc.getrA()));
     }
 
     private void cmplt(BancoRegistradores br, PC pc) {
         int cmp;
-        if (pc.getrA() < pc.getrB()){
+        if (br.getRegistrador(pc.getrA()) < br.getRegistrador(pc.getrB())){
             cmp = 1;
         }else cmp = 0;
         br.setRegistrador(pc.getrC(), cmp);
     }
 
     private void slli(BancoRegistradores br, PC pc) {
-        int shift = pc.getrA() << pc.getImm5();
+        int shift = br.getRegistrador(pc.getrA()) << br.getRegistrador(pc.getImm5());
         br.setRegistrador(pc.getrC(), shift );
     }
 
     private void sll(BancoRegistradores br, PC pc) {
-        int n = (pc.getrB() << 1);
+        int n = (br.getRegistrador(pc.getrB()) << 1);
         int shift = (pc.getrA() << n);
     }
 
@@ -433,31 +420,31 @@ public class Ula {
     }
 
     private void or(BancoRegistradores br, PC pc) {
-        br.setRegistrador(pc.getrC(), (pc.getrA() | pc.getrB()));
+        br.setRegistrador(pc.getrC(), (br.getRegistrador(pc.getrA()) | br.getRegistrador(pc.getrB())));
     }
 
     private void mulxsu(BancoRegistradores br, PC pc) {
-        long l = pc.getrA();
-        long l2 = pc.getrB() & 0xfL;
+        long l = br.getRegistrador(pc.getrA());
+        long l2 = br.getRegistrador(pc.getrB()) & 0xfL;
         long l3 = l * l2 >>> 32;
         br.setRegistrador(pc.getrC(), (int)l3);
     }
 
     private void cmpne(BancoRegistradores br, PC pc) {
-        if (pc.getrA() != pc.getrB()){
+        if (br.getRegistrador(pc.getrA()) != br.getRegistrador(pc.getrB())){
             br.setRegistrador(pc.getrC(), 1);
         }else br.setRegistrador(pc.getrC(), 0);
     }
 
     private void srli(BancoRegistradores br, PC pc) {
-        int n = pc.getImm5() & 0x3f;
-        br.setRegistrador(pc.getrC(), pc.getrA() >> n);
+        int n = br.getRegistrador(pc.getImm5()) & 0x3f;
+        br.setRegistrador(pc.getrC(), br.getRegistrador(pc.getrA()) >> n);
         
     }
 
     private void srl(BancoRegistradores br, PC pc) {
-        int n = (pc.getrB() << 1);
-        br.setRegistrador(pc.getrC(), pc.getrA() >> n);
+        int n = (br.getRegistrador(pc.getrB()) << 1);
+        br.setRegistrador(pc.getrC(), br.getRegistrador(pc.getrA()) >> n);
     }
     
 
@@ -470,20 +457,20 @@ public class Ula {
     }
 
     private void cmpeq(BancoRegistradores br, PC pc) {
-        if (pc.getrA() == pc.getrB()){
+        if (br.getRegistrador(pc.getrA()) == br.getRegistrador(pc.getrB())){
             br.setRegistrador(pc.getrC(), 1);
         }else br.setRegistrador(pc.getrC(), 0);
     }
 
     private void divu(BancoRegistradores br, PC pc) {
-        long rA = pc.getrA() & 0xfL;
-        long rB = pc.getrB() & 0xfL;
+        long rA = br.getRegistrador(pc.getrA()) & 0xfL;
+        long rB = br.getRegistrador(pc.getrB()) & 0xfL;
         long result = rA * rB;
         br.setRegistrador(pc.getrC(), (int)result);
     }
 
     private void div(BancoRegistradores br, PC pc) {
-        br.setRegistrador(pc.getrC(), pc.getrA() / pc.getrB());
+        br.setRegistrador(pc.getrC(), br.getRegistrador(pc.getrA()) / br.getRegistrador(pc.getrB()));
     }
 
     private void rdctl(BancoRegistradores br, PC pc) {
@@ -495,11 +482,11 @@ public class Ula {
     }
 
     private void cmpgeu(BancoRegistradores br, PC pc) {
-        long l = pc.getrA() & 0xfL;
-        long l2 = pc.getrB() & 0xfL;
+        long l = br.getRegistrador(pc.getrA()) & 0xfL;
+        long l2 = br.getRegistrador(pc.getrB()) & 0xfL;
         if (l >= l2){
-            br.setRegistrador(pc.getrA(),1);
-        }else br.setRegistrador(pc.getrA(),0);
+            br.setRegistrador(pc.getrC(),1);
+        }else br.setRegistrador(pc.getrC(),0);
     }
 
     private void initi(BancoRegistradores br, PC pc) {
@@ -512,11 +499,11 @@ public class Ula {
 
     
     private void cmpltu(BancoRegistradores br, PC pc) {
-        long l = pc.getrA() & 0xfL;
-        long l2 = pc.getrB() & 0xfL;
+        long l = br.getRegistrador(pc.getrA()) & 0xfL;
+        long l2 = br.getRegistrador(pc.getrB()) & 0xfL;
         if (l < l2){
-            br.setRegistrador(pc.getrA(),1);
-        }else br.setRegistrador(pc.getrA(),0);
+            br.setRegistrador(pc.getrC(),1);
+        }else br.setRegistrador(pc.getrC(),0);
     
     }
     
@@ -537,13 +524,13 @@ public class Ula {
     }
 
     private void srai(BancoRegistradores br, PC pc) {
-        int n = pc.getImm5() & 0x3f;
-        br.setRegistrador(pc.getrC(), pc.getrA() >> n);
+        int n = br.getRegistrador(pc.getImm5()) & 0x3f;
+        br.setRegistrador(pc.getrC(), br.getRegistrador(pc.getrA()) >> n);
     }
 
     private void sra(BancoRegistradores br, PC pc) {
-        int n = (pc.getrB() << 1);
-        br.setRegistrador(pc.getrC(), pc.getrA() >> n);
+        int n = (br.getRegistrador(pc.getrB()) << 1);
+        br.setRegistrador(pc.getrC(), br.getRegistrador(pc.getrA()) >> n);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -562,7 +549,7 @@ public class Ula {
     }
 
     private void addi(BancoRegistradores br, PC pc) {
-        br.setRegistrador(pc.getrC(), pc.getrA() + pc.getImm16());
+        br.setRegistrador(pc.getrC(), br.getRegistrador(pc.getrA()) + br.getRegistrador(pc.getImm16()));
     }
 
     private void stb(BancoRegistradores br, PC pc) {
