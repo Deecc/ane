@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package nios.ui;
+package ui;
+
 import javax.swing.JTable;
-import nios.*;
+
 import javax.swing.table.DefaultTableModel;
 
 /**
