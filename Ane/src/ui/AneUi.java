@@ -4,8 +4,8 @@
  */
 package ui;
 
+import nios.*;
 import javax.swing.JTable;
-
 import javax.swing.table.DefaultTableModel;
 
 /**
