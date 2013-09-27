@@ -112,14 +112,14 @@ public class AneUi extends javax.swing.JFrame {
                 .addGap(29, 29, 29))
         );
 
-        jRun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/nios/ui/run.png"))); // NOI18N
+        jRun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/run.png"))); // NOI18N
         jRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRunActionPerformed(evt);
             }
         });
 
-        jStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/nios/ui/step.png"))); // NOI18N
+        jStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/step.png"))); // NOI18N
         jStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jStepActionPerformed(evt);

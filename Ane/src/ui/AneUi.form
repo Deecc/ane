@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
@@ -194,7 +194,7 @@
     <Component class="javax.swing.JButton" name="jRun">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/nios/ui/run.png"/>
+          <Image iconType="3" name="/ui/run.png"/>
         </Property>
       </Properties>
       <Events>
@@ -204,7 +204,7 @@
     <Component class="javax.swing.JButton" name="jStep">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/nios/ui/step.png"/>
+          <Image iconType="3" name="/ui/step.png"/>
         </Property>
       </Properties>
       <Events>
