@@ -15,7 +15,15 @@ public class BancoRegistradores {
                 registrador[i] = "00000000000000000000000000000000";
             }
 	}
-	
+	public void generateValue(int i, String value){
+          if(i!=0){  
+            while(value.length() < 32){
+                value = "0" + value;
+            }
+            
+            registrador[i] = value;
+          }  
+        }
 	    
 	public int getRegistrador(int i) {
 		if (i == 0)return 0;
@@ -25,7 +33,7 @@ public class BancoRegistradores {
 	public void setRegistrador(int i, int valor) {
 		if (i != 0){
                    String sValor = "" + valor;
-		   this.registrador[i] = converter.decToBin(sValor) ;
+		   this.registrador[i] = converter.decToBin(sValor);
                 }
         }
 	

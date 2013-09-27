@@ -4,13 +4,14 @@
  */
 package nios;
 
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 
 
 
 public class Ula {
-	
+	Scanner sc = new Scanner(System.in);
 
 	public void exec(BancoRegistradores br, PC pc){
 	      switch (pc.getOpCode()) {

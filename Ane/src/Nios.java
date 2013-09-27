@@ -26,7 +26,7 @@ public class Nios {
 		// TODO Auto-generated method stub
                 BancoRegistradores br = new BancoRegistradores();
                 Conversor converter = new Conversor();
-                PC pc;
+                PC pc = new PC();
                 Scanner ler = new Scanner(System.in);
                 
 		FileReader fr = new FileReader("arquivo.txt"); 
@@ -35,7 +35,8 @@ public class Nios {
                 Ula ula = new Ula();
 		int i = 0;
                 int comp;
-
+               br.generateValue(1, "1");
+               br.generateValue(2, "101");
                 do{
                     System.out.println("Digite 1 para próxima instrução ou 9 para finalizar.\n");
                     comp = ler.nextInt();
@@ -44,10 +45,14 @@ public class Nios {
                         case 1:
                             if((linha = buf.readLine()) != null){
                                 System.out.println(linha);
-                                pc = new PC(linha);
+                                pc.setPC(linha);
                                ula.exec(br, pc);
                                 printRegisters(br);
-                            }else System.out.println("EOF");
+                            }else {
+                                System.out.println("EOF");
+                                printRegisters(br);
+                                comp = 9;
+                            }
                             break;
                         case 9:
                             
@@ -60,13 +65,7 @@ public class Nios {
                     
                 }while(comp != 9);
                 System.out.println("fim");
-//		while((linha = buf.readLine()) != null){
-//                    i++;
-//                    System.out.println("linha "+ i +":  " + linha);
-//                    
-//			
-//		}
-//               
+      
 	}
         
    private static void printRegisters(BancoRegistradores br){
