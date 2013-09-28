@@ -16,6 +16,7 @@ public class Ula {
 	Scanner sc = new Scanner(System.in);
 
 	public void exec(BancoRegistradores br, PC pc){
+            System.out.println(pc.getOpCode() + 2);
 	      switch (pc.getOpCode()) {
                     case 0x00:
                         call(br,pc);
@@ -23,8 +24,7 @@ public class Ula {
                     case 0x01:
                         jmpi(br, pc);              
 			break;
-                    case 0x02:
-						
+                    case 0x02:		
 			break;
                     case 0x03:
                         ldbu(br, pc);
@@ -45,10 +45,8 @@ public class Ula {
                         cmpgei(br, pc);
                         break;
                     case 0x09:
-                        
                         break;
                     case 0x0A:
-                        
                         break;
                     case 0x0B:
                         ldhu(br, pc);
@@ -69,10 +67,8 @@ public class Ula {
                         cmplti(br, pc);
                         break;
                     case 0x11:
-                        
                         break;
                     case 0x12:
-                        
                         break;
                     case 0x13:
                         initda(br, pc);
@@ -93,10 +89,8 @@ public class Ula {
                         cmpnei(br, pc);
                         break;
                     case 0x19:
-                      
                         break;
                     case 0x1A:
-                        
                         break;
                     case 0x1B:
                         flushda(br, pc);
@@ -105,22 +99,18 @@ public class Ula {
                         xori(br, pc);
                         break;
                     case 0x1D:
-                        
                         break;
                     case 0x1E:
                         bne(br, pc);
                         break;
                     case 0x1F:
-                        
                         break;
                     case 0x20:
                         cmpeqi(br, pc);
                         break;
                     case 0x21:
-                        
                         break;
                     case 0x22:
-                        
                         break;
                     case 0x23:
                         ldbuio(br, pc);
@@ -141,10 +131,8 @@ public class Ula {
                         cmpqeui(br, pc);
                         break;
                     case 0x29:
-                        
                         break;
                     case 0x2A:
-                        
                         break;
                     case 0x2B:
                         ldhuio(br, pc);
@@ -165,7 +153,6 @@ public class Ula {
                         cmpltui(br, pc);
                         break;
                     case 0x31:
-                        
                         break;
                     case 0x32:
                         custom(br, pc);
@@ -189,7 +176,6 @@ public class Ula {
                         rdprs(br, pc);
                         break;
                     case 0x39:
-                        
                         break;
                     case 0x3A:
                         rTypeOperation(br, pc);
@@ -201,13 +187,10 @@ public class Ula {
                         xorhi(br, pc);
                         break;    
                     case 0x3D:
-                        
                         break;
                     case 0x3E:
-                        
                         break;
                     case 0x3F:
-                        
                         break;
                 default:
                     JOptionPane.showMessageDialog(null, "Código Inoperante ou reservado.",null , JOptionPane.ERROR_MESSAGE );
@@ -552,7 +535,7 @@ public class Ula {
     }
 
     private void addi(BancoRegistradores br, PC pc) {
-        br.setRegistrador(pc.getrC(), br.getRegistrador(pc.getrA()) + br.getRegistrador(pc.getImm16()));
+        br.setRegistrador(pc.getrB(), br.getRegistrador(pc.getrA()) + pc.getImm16());
     }
 
     private void stb(BancoRegistradores br, PC pc) {
