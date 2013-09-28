@@ -7,12 +7,12 @@ public class PC {
         private String linha = "00000000000000000000000000000000";
 	private int opCode, rA, rB, rC, opx, imm16, imm5;
 	
-	
+
 	public void setPC(String linha){
             this.linha = linha;
             splitLinha();
         }
-        
+
         private void splitLinha(){
                 sPCparts[0] = linha.substring(0, 5);   // rA              5bits
 		sPCparts[1] = linha.substring(5, 10);   // rB              5bits
@@ -29,7 +29,7 @@ public class PC {
 		this.opx = Integer.parseInt(sPCparts[3], 2);
 		this.imm5 = Integer.parseInt(sPCparts[4], 2);
         }
-        
+
 
 	public int getOpCode() {
 		return opCode;
