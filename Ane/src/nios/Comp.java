@@ -10,30 +10,20 @@ package nios;
  * @author pesquisa
  */
 public class Comp{
-    String [] code;
-    private int lineCounter = 0;
-    private int end;
-    public Comp(String[] code){
-        this.code = code;
-        end = code.length;
+    Conversor converter = new Conversor();
+    public Comp(){
     }
     
-    public void line(PC pc, Ula ula, BancoRegistradores br){
-        if(lineCounter++ < end){
-            pc.setPC(code[lineCounter]);
-            ula.exec(br, pc);
-        }
-    }
-    
-    public void all(PC pc, Ula ula, BancoRegistradores br){
-        while(lineCounter++ < end){
-            pc.setPC(code[lineCounter]);
-            ula.exec(br, pc);
-        }
-    }
-    
-    public void clear(){
-        lineCounter = 0;
-        code = null;
+    public boolean line(PC pc, Ula ula, BancoRegistradores br, String code){
+           if(code.contains("0x")){
+               code = converter.hexToBin(code);
+           }
+           if(pc.setPC(code)){
+                ula.exec(br, pc);
+                return true;
+           }else{
+               return false;
+           }
+           
     }
 }

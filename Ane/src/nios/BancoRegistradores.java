@@ -6,11 +6,9 @@ package nios;
 
 public class BancoRegistradores {
         private static Conversor converter = new Conversor();
-	String registrador[];
+	String registrador[] = new String[32];
         
 	public BancoRegistradores() {
-
-            registrador = new String[32];
             for(int i = 0; i<32;i++){
                 registrador[i] = "00000000000000000000000000000000";
             }
@@ -36,7 +34,14 @@ public class BancoRegistradores {
 		   this.registrador[i] = converter.decToBin(sValor);
                 }
         }
-	
+        
+        public void zerar(){
+            
+            for(int i = 0; i<32;i++){
+                registrador[i] = "00000000000000000000000000000000";
+            }
+
+        }
 	 public String[] getBancoRegistradores(){
              return registrador;
          }

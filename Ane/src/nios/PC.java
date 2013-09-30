@@ -8,9 +8,14 @@ public class PC {
 	private int opCode, rA, rB, rC, opx, imm16, imm5;
 	
 	
-	public void setPC(String linha){
-            this.linha = linha;
-            splitLinha();
+	public boolean setPC(String linha){
+            if(linha.contains("end")) 
+                return false;
+            else{
+                this.linha = linha;
+                splitLinha();
+                return true;
+            }
         }
         
         private void splitLinha(){

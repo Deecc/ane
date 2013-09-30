@@ -536,7 +536,7 @@ public class Ula {
 
     private void addi(BancoRegistradores br, PC pc) {
         br.setRegistrador(pc.getrB(), br.getRegistrador(pc.getrA()) + pc.getImm16());
-    }
+                }
 
     private void stb(BancoRegistradores br, PC pc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

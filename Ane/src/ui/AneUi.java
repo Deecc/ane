@@ -4,6 +4,8 @@
  */
 package ui;
 
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import nios.*;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -17,12 +19,13 @@ public class AneUi extends javax.swing.JFrame {
     /**
      * Creates new form AneUi
      */
-    Comp compile;
+    Comp compile = new Comp();
     Ula ula = new Ula();
     BancoRegistradores br = new BancoRegistradores();
-    Conversor converter = new Conversor();
-    PC pc = new PC();
     
+    PC pc = new PC();
+    int i = 0;
+    JFileChooser jfc = new JFileChooser();
     DefaultTableModel banReg =  new DefaultTableModel(null, new String[] {"register", "data"} );
     String registersName[] = {"r0", "r1","r2","r3","r4","r5","r6","r7","r8","r9"
             ,"r10","r11","r12","r13","r14","r15","r16","r17","r18","r19","r20",
@@ -32,6 +35,13 @@ public class AneUi extends javax.swing.JFrame {
          for (int i = 0; i < 32; i++) {
             banReg.setValueAt(br.getBancoRegistradores()[i], i, 1);
         }
+    }
+    private void zerar(BancoRegistradores br){
+        br.zerar();
+        this.i = 0;
+    }
+    private String[] getCode(){
+        return TextInput.getText().replace(" ", "").split("\n");
     }
     
     public AneUi() {
@@ -50,6 +60,7 @@ public class AneUi extends javax.swing.JFrame {
         RegistersSet.getColumnModel().getColumn(1).setPreferredWidth(272);
         atualizarRegistradores();
        
+        
     }
 
     /**
@@ -63,21 +74,13 @@ public class AneUi extends javax.swing.JFrame {
 
         jEditor = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TextInput = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         RegistersSet = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TextInput = new javax.swing.JTextArea();
         jRun = new javax.swing.JButton();
         jStep = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jArquivo = new javax.swing.JMenu();
-        Abrir = new javax.swing.JMenuItem();
-        jSalvar = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jSair = new javax.swing.JMenuItem();
-        Editar = new javax.swing.JMenu();
-        jAjuda = new javax.swing.JMenu();
-        jSobre = new javax.swing.JMenu();
+        jZerador = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("ANE - Another Nios II Emulator");
@@ -86,19 +89,22 @@ public class AneUi extends javax.swing.JFrame {
         jEditor.setFont(new java.awt.Font("Arial Black", 2, 12)); // NOI18N
         jEditor.setText("Editor");
 
-        jScrollPane1.setViewportView(TextInput);
-
         RegistersSet.setModel(banReg);
         RegistersSet.setAlignmentY(0.1F);
         RegistersSet.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane2.setViewportView(RegistersSet);
+
+        TextInput.setColumns(20);
+        TextInput.setRows(5);
+        jScrollPane3.setViewportView(TextInput);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -107,8 +113,8 @@ public class AneUi extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane3)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE))
                 .addGap(29, 29, 29))
         );
@@ -127,43 +133,12 @@ public class AneUi extends javax.swing.JFrame {
             }
         });
 
-        jArquivo.setText("Arquivo");
-
-        Abrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK));
-        Abrir.setText("Abrir");
-        Abrir.addActionListener(new java.awt.event.ActionListener() {
+        jZerador.setText("zerar");
+        jZerador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AbrirActionPerformed(evt);
+                jZeradorActionPerformed(evt);
             }
         });
-        jArquivo.add(Abrir);
-
-        jSalvar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jSalvar.setText("Salvar");
-        jSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jSalvarActionPerformed(evt);
-            }
-        });
-        jArquivo.add(jSalvar);
-        jArquivo.add(jSeparator1);
-
-        jSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jSair.setText("Sair");
-        jArquivo.add(jSair);
-
-        jMenuBar1.add(jArquivo);
-
-        Editar.setText("Editar");
-        jMenuBar1.add(Editar);
-
-        jAjuda.setText("Ajuda");
-        jMenuBar1.add(jAjuda);
-
-        jSobre.setText("Sobre");
-        jMenuBar1.add(jSobre);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -174,9 +149,11 @@ public class AneUi extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jEditor, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
+                        .addGap(145, 145, 145)
+                        .addComponent(jZerador)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jRun)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jStep))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -185,34 +162,40 @@ public class AneUi extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRun)
-                    .addComponent(jStep)
-                    .addComponent(jEditor, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jRun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jStep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jEditor, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jZerador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AbrirActionPerformed
-
-    private void jSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSalvarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jSalvarActionPerformed
-
     private void jStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jStepActionPerformed
-        
+        if(compile.line(pc,ula,br, getCode()[i])){
+            atualizarRegistradores();
+            i++;
+        }
     }//GEN-LAST:event_jStepActionPerformed
 
     private void jRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRunActionPerformed
-        compile = new Comp(TextInput.getText().split("\n"));
-        compile.all(pc, ula, br);
+
+        String code[] = getCode();
+        while(compile.line(pc, ula, br, code[this.i])){
+            atualizarRegistradores();
+            i++;
+        }
+        
     }//GEN-LAST:event_jRunActionPerformed
+
+    private void jZeradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jZeradorActionPerformed
+        zerar(br);
+        atualizarRegistradores();
+    }//GEN-LAST:event_jZeradorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -252,22 +235,14 @@ public class AneUi extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Abrir;
-    private javax.swing.JMenu Editar;
     private javax.swing.JTable RegistersSet;
-    private javax.swing.JTextPane TextInput;
-    private javax.swing.JMenu jAjuda;
-    private javax.swing.JMenu jArquivo;
+    private javax.swing.JTextArea TextInput;
     private javax.swing.JLabel jEditor;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jRun;
-    private javax.swing.JMenuItem jSair;
-    private javax.swing.JMenuItem jSalvar;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JMenu jSobre;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JButton jStep;
+    private javax.swing.JButton jZerador;
     // End of variables declaration//GEN-END:variables
 }
